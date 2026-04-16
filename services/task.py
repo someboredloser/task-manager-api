@@ -4,7 +4,7 @@ from app.repositories.task import TaskRepository
 from app.schemas.task import TaskCreateSchema, TaskSchema, TaskUpdateSchema
 
 
-class TaskServices:
+class TaskService:
     def __init__(self, db: Session) -> None:
         self.db = db
         self.task_repository = TaskRepository(db=db)
