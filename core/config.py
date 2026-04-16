@@ -2,28 +2,29 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    # APP
     env: str = "dev"
-    debug: bool = True
+    debug: bool = False
 
-    # DATABASE
     database_url: str
-
-    # SECURITY
     secret_key: str
+
     access_token_expire_minutes: int = 15
     refresh_token_expire_days: int = 7
 
-    # CORS 
     cors_origins: str = ""
 
-    model_config = SettingsConfigDict(env_file=".env")
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        case_sensitive=False
+    )
 
     @property
     def cors_origins_list(self) -> list[str]:
-        return [origin.strip() for origin in self.cors_origins.split(",") if origin]
-    
-    
-def get_settings():
-    return Settings()
-        
+        return [
+            origin.strip()
+            for origin in self.cors_origins.split(",")
+            if origin.strip()
+        ]
+
+
+settings = Settings()

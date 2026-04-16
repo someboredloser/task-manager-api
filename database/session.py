@@ -1,5 +1,5 @@
 from sqlalchemy.orm import sessionmaker
-from app.database import engine
+from app.database.engine import engine
 
 
 SessionLocal = sessionmaker(
