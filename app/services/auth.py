@@ -1,3 +1,4 @@
+from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.core.security import create_access_token, create_refresh_token, hash_password, verify_password
@@ -13,7 +14,7 @@ class AuthService:
     def register(self, email: str, password: str) -> UserSchema:
         existing_user = self.user_repository.get_by_email(email)
         if existing_user:
-            raise Exception("User already exists")
+            HTTPException(status_code=status.HTTP_409_CONFLICT, detail="User already exists")
 
         hashed = hash_password(password=password)
 
@@ -26,7 +27,7 @@ class AuthService:
         user = self.user_repository.get_by_email(email=email)
 
         if not user or not verify_password(password=password, hashed=user.password):
-            raise Exception("Invalid credentials")
+            HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
 
         access = create_access_token({"sub": user.id})
         refresh = create_refresh_token({"sub": user.id})
