@@ -2,6 +2,7 @@ from typing import Generator
 from fastapi import Depends
 from app.database.session import SessionLocal
 from sqlalchemy.orm import Session
+from app.services.auth import AuthService
 from app.services.task import TaskService
 
 
@@ -14,3 +15,6 @@ def get_db() -> Generator[Session, None, None]:
 
 def get_task_service(db: Session = Depends(get_db)):
     return TaskService(db)
+
+def get_auth_service(db: Session = Depends(get_db)):
+    return AuthService(db)

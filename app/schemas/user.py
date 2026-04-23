@@ -10,3 +10,12 @@ class UserSchema(BaseModel):
 class CreateUserSchema(BaseModel):
     email: str
     password:str
+    
+class LoginSchema(BaseModel):
+    email: str
+    password: str
+    
+class TokenSchema(BaseModel):
+    access_token: str
+    refresh_token: str
+    token_type: str = "bearer"

@@ -24,11 +24,11 @@ def create_refresh_token(data: dict) -> str:
 
 def decode_token(token: str) -> dict | None:
     try:
-        return jwt.decode(token, settings.secret_key, algorithm=[settings.algorithm])
+        return jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
     except JWTError:
         return None
     
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
 
 
 def hash_password(password: str) -> str:

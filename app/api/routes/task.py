@@ -4,23 +4,23 @@ from app.exception.task import TaskNotFound
 from app.schemas.task import TaskCreateSchema, TaskSchema, TaskUpdateSchema
 from app.services.task import TaskService
 
-router = APIRouter(prefix="/tasks")
+router = APIRouter(prefix="/tasks", tags=["tasks"])
 
 
-@router.get("")
+@router.get("", response_model=list[TaskSchema])
 def read_task(
     task_services: TaskService = Depends(get_task_service)
 ) -> list[TaskSchema]:
     return task_services.list_tasks()
 
-@router.post("", status_code=status.HTTP_201_CREATED)
+@router.post("", status_code=status.HTTP_201_CREATED, response_model=TaskSchema)
 def create_task(
     payload: TaskCreateSchema, 
     task_services: TaskService = Depends(get_task_service)
 ) -> TaskSchema:
     return task_services.create_task(task_create=payload)
     
-@router.patch("/{task_id}")
+@router.patch("/{task_id}", response_model=TaskSchema)
 def update_task(
     task_id: str, payload: TaskUpdateSchema, 
     task_services: TaskService = Depends(get_task_service)
