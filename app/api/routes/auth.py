@@ -24,5 +24,6 @@ def login(
     return service.login(payload.email, payload.password)
 
 @router.get("/me", response_model=UserSchema)
-def me(user=Depends(get_current_user)):
+def me(user = Depends(get_current_user)):
     return user
+    

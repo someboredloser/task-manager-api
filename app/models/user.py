@@ -3,7 +3,6 @@ from uuid import uuid4
 from app.database.base import Base
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-
 class UserORM(Base):
     __tablename__ = "users"
     
@@ -13,5 +12,7 @@ class UserORM(Base):
     )
     email: Mapped[str] = mapped_column(unique=True, index=True)
     password: Mapped[str] = mapped_column()
+    
+    role: Mapped[str] = mapped_column(default="user")
     
     tasks = relationship("TaskORM", back_populates="user")
