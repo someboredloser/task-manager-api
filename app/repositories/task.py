@@ -7,8 +7,14 @@ class TaskRepository:
     def __init__(self, db: Session) -> None:
         self.db = db
     
-    def get_by_user(self, user_id: str) -> list[TaskORM]:
-        stmt = select(TaskORM).where(TaskORM.user_id == user_id)
+    def get_by_user(self, user_id: str, limit: int, offset: int) -> list[TaskORM]:
+        stmt = (
+            select(TaskORM)
+            .where(TaskORM.user_id == user_id)
+            .order_by(TaskORM.id)
+            .limit(limit)
+            .offset(offset)
+        )
         return self.db.scalars(stmt).all()
     
     def get_by_id(self, task_id: str) -> TaskORM | None: 

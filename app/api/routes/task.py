@@ -9,11 +9,21 @@ router = APIRouter(prefix="/tasks", tags=["tasks"])
 
 
 @router.get("", response_model=list[TaskSchema])
+@router.get("", response_model=list[TaskSchema])
 def read_task(
+    page: int = 1,
+    limit: int = 5,
     user = Depends(get_current_user),
     task_services: TaskService = Depends(get_task_service)
 ) -> list[TaskSchema]:
-    return task_services.list_tasks(user=user)
+    
+    offset = (page - 1) * limit
+    
+    return task_services.list_tasks(
+        user=user,
+        limit=limit,
+        offset=offset
+    )
 
 @router.post("", status_code=status.HTTP_201_CREATED, response_model=TaskSchema)
 def create_task(

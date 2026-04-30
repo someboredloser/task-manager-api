@@ -12,8 +12,12 @@ class TaskService:
         self.db = db
         self.task_repository = TaskRepository(db=db)
         
-    def list_tasks(self, user: UserORM) -> list[TaskSchema]:
-        tasks_orm = self.task_repository.get_by_user(user_id=user.id)
+    def list_tasks(self, user: UserORM, limit: int, offset: int) -> list[TaskSchema]:
+        tasks_orm = self.task_repository.get_by_user(
+            user_id=user.id,
+            limit=limit,
+            offset=offset
+        )
         return [TaskSchema.model_validate(task) for task in tasks_orm]
     
     def create_task(self, task_create: TaskCreateSchema, user: UserORM) -> TaskSchema:
